@@ -25,7 +25,7 @@ GET http://localhost:3000/todos/?category=LEARNING&priority=HIGH
 GET http://localhost:3000/todos/6/
 
 ### API 3 checked
-GET http://localhost:3000/agenda/?date=2021-02-22
+GET http://localhost:3000/agenda/?date=2021-2-22
 
 ### API 4 checked
 POST http://localhost:3000/todos/

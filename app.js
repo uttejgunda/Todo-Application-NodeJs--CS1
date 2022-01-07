@@ -8,6 +8,7 @@ const path = require("path");
 app.use(express.json());
 
 var isValid = require("date-fns/isValid");
+var format = require("date-fns/format");
 
 let db = null;
 let dbPath = path.join(__dirname, "todoApplication.db");
@@ -209,18 +210,32 @@ const checkValidDate = (date) => {
   return isValid(new Date(date));
 };
 
+const formatDate = (splitdate) => {
+  return format(
+    new Date(splitdate[0], splitdate[1] - 1, splitdate[2]),
+    "yyyy-MM-dd"
+  );
+};
+
 // API 3 - Get todo based on date query parameter
 app.get("/agenda/", async (request, response) => {
   const { date } = request.query;
+  splitdate = date.split("-");
+  //console.log(splitdate);
+
+  let formattedDate = formatDate(splitdate);
+  //console.log(formattedDate);
 
   const getQuery = `
     SELECT * 
     FROM todo
-    WHERE due_date = '${date}';`;
+    WHERE due_date = '${formattedDate}';`;
 
   if (checkValidDate(date)) {
     console.log(checkValidDate(date));
+
     const todosList = await db.all(getQuery);
+
     response.send(
       todosList.map((eachItem) => convertDbTodoToResponse(eachItem))
     );
